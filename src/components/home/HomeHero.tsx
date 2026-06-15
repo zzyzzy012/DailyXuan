@@ -1,0 +1,67 @@
+import { ArrowRight, History, Sparkles } from "lucide-react";
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+export function HomeHero() {
+  return (
+    <section className="mx-auto grid w-full max-w-6xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:px-8 lg:py-20">
+      <div className="flex flex-col justify-center gap-7">
+        <div className="flex flex-wrap items-center gap-2">
+          <Badge variant="secondary">轻量级玄学娱乐</Badge>
+          <Badge variant="outline">每日免费体验</Badge>
+        </div>
+
+        <div className="space-y-5">
+          <h1 className="max-w-3xl text-4xl font-semibold leading-tight tracking-normal text-foreground sm:text-5xl lg:text-6xl">
+            每天给自己一点温柔的玄学提示
+          </h1>
+          <p className="max-w-2xl text-base leading-8 text-muted-foreground sm:text-lg">
+            DailyXuan 提供今日运势、梦境解析、塔罗占卜与八字简批，偏向娱乐、情感陪伴和生活引导。
+            输入一点近况，让解读更像是在回应你此刻真正关心的事。
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <Button size="lg" asChild>
+            <a href="#tarot">
+              先抽一张牌
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </Button>
+          <Button size="lg" variant="outline" asChild>
+            <a href="#daily-fortune">
+              查看今日运势
+              <Sparkles className="h-4 w-4" aria-hidden="true" />
+            </a>
+          </Button>
+        </div>
+      </div>
+
+      <div className="rounded-lg border bg-card p-5 shadow-sm">
+        <div className="flex items-center justify-between border-b pb-4">
+          <div>
+            <p className="text-sm text-muted-foreground">今日体验</p>
+            <h2 className="mt-1 text-2xl font-semibold">适合先问一个具体问题</h2>
+          </div>
+          <span className="flex h-10 w-10 items-center justify-center rounded-md bg-secondary">
+            <History className="h-5 w-5" aria-hidden="true" />
+          </span>
+        </div>
+
+        <div className="grid gap-4 pt-5">
+          {[
+            ["感情", "这段关系接下来更适合主动还是观察？"],
+            ["事业", "最近换工作或推进项目，需要注意什么？"],
+            ["情绪", "为什么最近总是梦到类似的场景？"],
+          ].map(([label, content]) => (
+            <div key={label} className="rounded-md border bg-background p-4">
+              <p className="text-sm font-medium">{label}</p>
+              <p className="mt-2 text-sm leading-6 text-muted-foreground">{content}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

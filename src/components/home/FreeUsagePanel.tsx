@@ -1,0 +1,48 @@
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { USAGE_RULES } from "@/lib/constants";
+
+export function FreeUsagePanel() {
+  return (
+    <section
+      className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8"
+      aria-labelledby="usage-rule-title"
+    >
+      <div className="rounded-lg border bg-muted/30 p-5 sm:p-6">
+        <div className="mb-6 flex flex-col gap-2">
+          <p className="text-sm font-medium text-muted-foreground">免费规则</p>
+          <h2 id="usage-rule-title" className="text-2xl font-semibold sm:text-3xl">
+            免费体验清晰，后续付费自然
+          </h2>
+          <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
+            第一版先把“生成报告、保存报告、复看报告、次数不足提示”这条主链路跑顺，为后续会员和次数包预留空间。
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2">
+          {USAGE_RULES.map((rule) => {
+            const Icon = rule.icon;
+
+            return (
+              <Card key={rule.title}>
+                <CardHeader className="flex flex-row items-center gap-3 space-y-0">
+                  <span className="flex h-10 w-10 items-center justify-center rounded-md bg-secondary">
+                    <Icon className="h-5 w-5" aria-hidden="true" />
+                  </span>
+                  <CardTitle className="text-lg">{rule.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm leading-6 text-muted-foreground">{rule.description}</p>
+                </CardContent>
+              </Card>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
