@@ -25,10 +25,10 @@ export function SiteHeader() {
 
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
-            <a href="#history">历史报告</a>
+            <Link href="/#history">历史报告</Link>
           </Button>
           <Button size="sm" asChild>
-            <a href="#tarot">开始体验</a>
+            <Link href="/tarot">开始体验</Link>
           </Button>
         </div>
       </div>

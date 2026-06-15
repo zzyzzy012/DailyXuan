@@ -12,13 +12,30 @@ import {
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
 import { tarotDrawRequestSchema } from "../schemas/tarotSchema";
-import type { TarotDrawResult as TarotDrawResultType } from "../types/tarot";
+import type {
+  TarotDrawResult as TarotDrawResultType,
+  TarotReadingResult as TarotReadingResultType,
+} from "../types/tarot";
 import { TarotDrawResult } from "./TarotDrawResult";
+import { TarotReadingResult } from "./TarotReadingResult";
 
 type TarotDrawApiResponse =
   | {
       success: true;
       data: TarotDrawResultType;
+    }
+  | {
+      success: false;
+      error: {
+        code: string;
+        message: string;
+      };
+    };
+
+type TarotReadingApiResponse =
+  | {
+      success: true;
+      data: TarotReadingResultType;
     }
   | {
       success: false;
@@ -52,12 +69,14 @@ export function TarotDrawPanel() {
   const [question, setQuestion] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
+  const [isReading, setIsReading] = useState(false);
   const [drawResult, setDrawResult] = useState<TarotDrawResultType | null>(null);
+  const [readingResult, setReadingResult] = useState<TarotReadingResultType | null>(null);
   const [displayedLines, setDisplayedLines] = useState<string[]>([]);
 
   const canCreateReading = useMemo(
-    () => Boolean(drawResult) && !isDrawing,
-    [drawResult, isDrawing],
+    () => Boolean(drawResult) && !isDrawing && !isReading,
+    [drawResult, isDrawing, isReading],
   );
 
   async function handleDraw(event: FormEvent<HTMLFormElement>) {
@@ -73,6 +92,7 @@ export function TarotDrawPanel() {
     setIsDrawing(true);
     setErrorMessage(null);
     setDrawResult(null);
+    setReadingResult(null);
     setDisplayedLines([]);
 
     try {
@@ -106,8 +126,44 @@ export function TarotDrawPanel() {
     }
   }
 
+  async function handleCreateReading() {
+    if (!drawResult) {
+      return;
+    }
+
+    setIsReading(true);
+    setErrorMessage(null);
+    setReadingResult(null);
+
+    try {
+      const response = await fetch("/api/tarot-readings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          question: drawResult.question,
+          cards: drawResult.cards,
+        }),
+      });
+
+      const result = (await response.json()) as TarotReadingApiResponse;
+
+      if (!result.success) {
+        setErrorMessage(result.error.message);
+        return;
+      }
+
+      setReadingResult(result.data);
+    } catch {
+      setErrorMessage("解读生成失败，请稍后再试");
+    } finally {
+      setIsReading(false);
+    }
+  }
+
   return (
-    <div className="grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
+    <div className="mx-auto flex w-full max-w-3xl flex-col gap-6">
       <Card>
         <CardHeader>
           <CardTitle className="text-2xl">请输入你想占卜的问题</CardTitle>
@@ -152,11 +208,18 @@ export function TarotDrawPanel() {
 
           {drawResult ? <TarotDrawResult cards={drawResult.cards} /> : null}
 
-          <Button className="w-full" variant="outline" disabled={!canCreateReading}>
-            生成解读（即将接入）
+          <Button
+            className="w-full"
+            variant="outline"
+            disabled={!canCreateReading}
+            onClick={handleCreateReading}
+          >
+            {isReading ? "解读生成中..." : "生成解读"}
           </Button>
         </CardContent>
       </Card>
+
+      {readingResult ? <TarotReadingResult reading={readingResult} /> : null}
     </div>
   );
 }

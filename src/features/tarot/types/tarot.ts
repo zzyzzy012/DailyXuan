@@ -31,3 +31,12 @@ export type TarotDrawResult = {
   cards: TarotDrawnCard[];
   createdAt: string;
 };
+
+export type TarotReadingResult = {
+  summary: string;
+  current: string;
+  obstacle: string;
+  advice: string;
+  action_advice: string;
+  lucky_keywords: [string, string, string];
+};
