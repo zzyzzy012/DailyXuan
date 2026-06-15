@@ -11,10 +11,10 @@ import {
 export const SITE_NAME = "DailyXuan";
 
 export const SITE_DESCRIPTION =
-  "轻量级玄学娱乐与自我探索工具，提供今日运势、梦境解析、塔罗占卜与八字简批。";
+  "轻量级玄学娱乐与自我探索工具，提供今日灵签、梦境解析、塔罗占卜与八字简批。";
 
 export const NAV_ITEMS = [
-  { label: "今日运势", href: "#daily-fortune" },
+  { label: "今日灵签", href: "/daily-lot" },
   { label: "梦境解析", href: "#dream" },
   { label: "塔罗占卜", href: "/tarot" },
   { label: "八字简批", href: "#bazi" },
@@ -24,13 +24,13 @@ export const NAV_ITEMS = [
 
 export const FEATURE_ENTRIES = [
   {
-    id: "daily-fortune",
-    title: "今日运势",
-    description: "结合生日、星座、生肖与当前日期，生成今日综合提醒。",
+    id: "daily-lot",
+    title: "今日灵签",
+    description: "输入出生日期并选择今日关注，抽取一支适合日常阅读的轻量灵签。",
     icon: CalendarHeart,
     badge: "每日免费",
-    cta: "查看今日",
-    href: "#daily-fortune",
+    cta: "抽取灵签",
+    href: "/daily-lot",
   },
   {
     id: "dream",
@@ -63,8 +63,8 @@ export const FEATURE_ENTRIES = [
 
 export const USAGE_RULES = [
   {
-    title: "今日运势",
-    description: "每天可免费生成 1 次，重复查看当天报告不额外扣次数。",
+    title: "今日灵签",
+    description: "抽签本身免费，AI 解签成功后再按后续规则消耗次数。",
     icon: CalendarHeart,
   },
   {
