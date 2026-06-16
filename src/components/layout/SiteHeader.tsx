@@ -24,9 +24,6 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
-            <Link href="/#history">历史报告</Link>
-          </Button>
           <Button size="sm" asChild>
             <Link href="/tarot">开始体验</Link>
           </Button>

@@ -16,10 +16,10 @@ export function FreeUsagePanel() {
         <div className="mb-6 flex flex-col gap-2">
           <p className="text-sm font-medium text-muted-foreground">免费规则</p>
           <h2 id="usage-rule-title" className="text-2xl font-semibold sm:text-3xl">
-            免费体验清晰，后续付费自然
+            每日体验规则
           </h2>
           <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-            第一版先把“生成报告、保存报告、复看报告、次数不足提示”这条主链路跑顺，为后续会员和次数包预留空间。
+            今日灵签可免费抽取；梦境解析、塔罗占卜与八字简批共享每日免费解读额度。免费额度用完后，可通过后续会员或次数包继续生成解读。
           </p>
         </div>
 

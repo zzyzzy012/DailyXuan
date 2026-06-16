@@ -18,9 +18,9 @@ export function FeatureEntryGrid() {
       aria-labelledby="feature-entry-title"
     >
       <div className="mb-6 flex flex-col gap-2">
-        <p className="text-sm font-medium text-muted-foreground">网站模块</p>
+        <p className="text-sm font-medium text-muted-foreground">探索入口</p>
         <h2 id="feature-entry-title" className="text-2xl font-semibold sm:text-3xl">
-          选择你今天想探索的方向
+          选择今天想听见的提示
         </h2>
       </div>
 
