@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Moon, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,11 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { UsageLimitNotice } from "@/features/usage/components/UsageLimitNotice";
+import type {
+  AiReadingUsageSummary,
+  UsageRecordsApiResponse,
+} from "@/features/usage/types/usage";
 import { cn } from "@/lib/utils";
 
 import { DREAM_INTERPRETATION_STYLE_OPTIONS } from "../constants";
@@ -46,6 +51,26 @@ export function DreamReadingPanel() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isReading, setIsReading] = useState(false);
   const [readingResult, setReadingResult] = useState<DreamReadingResultType | null>(null);
+  const [usageSummary, setUsageSummary] = useState<AiReadingUsageSummary | null>(null);
+
+  const sharedReadingUsage = usageSummary?.sharedReading ?? null;
+
+  async function refreshUsageSummary() {
+    const response = await fetch("/api/usage-records");
+    const result = (await response.json()) as UsageRecordsApiResponse;
+
+    if (result.success) {
+      setUsageSummary(result.data);
+    }
+  }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void refreshUsageSummary();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, []);
 
   async function handleCreateReading(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -60,6 +85,11 @@ export function DreamReadingPanel() {
 
     if (!parsedValues.success) {
       setErrorMessage(parsedValues.error.issues[0]?.message ?? "请检查梦境内容");
+      return;
+    }
+
+    if (!sharedReadingUsage?.isAvailable) {
+      setErrorMessage(sharedReadingUsage?.message ?? "AI 解读次数暂不可用");
       return;
     }
 
@@ -84,6 +114,7 @@ export function DreamReadingPanel() {
       }
 
       setReadingResult(result.data);
+      await refreshUsageSummary();
     } catch {
       setErrorMessage("梦境解析失败，请稍后再试");
     } finally {
@@ -174,10 +205,15 @@ export function DreamReadingPanel() {
               <p className="text-sm text-destructive">{errorMessage}</p>
             ) : null}
 
-            <Button type="submit" className="w-full" disabled={isReading}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isReading || !sharedReadingUsage?.isAvailable}
+            >
               <Sparkles className="h-4 w-4" aria-hidden="true" />
               {isReading ? "解析中..." : "解析梦境"}
             </Button>
+            <UsageLimitNotice bucket={sharedReadingUsage} />
           </form>
         </CardContent>
       </Card>

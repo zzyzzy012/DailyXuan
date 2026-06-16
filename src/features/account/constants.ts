@@ -46,22 +46,25 @@ export const ACCOUNT_SECTION_OPTIONS = [
 
 export const MEMBERSHIP_LEVEL_CONFIG = {
   free: {
-    label: "普通用户",
-    priceLabel: "0 元",
+    label: "免费体验",
+    priceLabel: "免费体验",
     dailyCredits: 0,
-    summary: "默认账号状态，适合先体验基础流程。",
+    quotaLabel: "共 2 次免费 AI 解读",
+    summary: "登录后可体验 2 次 AI 解读：今日灵签 1 次，梦境、塔罗、八字共享 1 次。",
   },
-  daily_5: {
+  basic: {
     label: "每日体验会员",
-    priceLabel: "9.9 元",
+    priceLabel: "9.9 元/月",
     dailyCredits: 5,
-    summary: "适合轻量使用，每日可体验 5 次。",
+    quotaLabel: "每日 5 次 AI 解读",
+    summary: "适合轻量使用，每天可生成 5 次 AI 解读，覆盖灵签、梦境、塔罗和八字。",
   },
-  daily_15: {
+  plus: {
     label: "深度体验会员",
-    priceLabel: "19.9 元",
+    priceLabel: "19.9 元/月",
     dailyCredits: 15,
-    summary: "适合高频使用，每日可体验 15 次。",
+    quotaLabel: "每日 15 次 AI 解读",
+    summary: "适合高频使用，每天可生成 15 次 AI 解读，适合经常探索多个模块。",
   },
 } as const;
 

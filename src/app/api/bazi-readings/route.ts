@@ -6,12 +6,19 @@ import {
   BaziReadingServiceError,
   createBaziReading,
 } from "@/features/bazi/services/baziReadingService";
+import {
+  UsageServiceError,
+  withAiReadingUsage,
+} from "@/features/usage/services/usageService";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const values = baziReadingRequestSchema.parse(body);
-    const reading = await createBaziReading(values);
+    const reading = await withAiReadingUsage({
+      featureType: "bazi",
+      action: () => createBaziReading(values),
+    });
 
     return NextResponse.json({
       success: true,
@@ -41,6 +48,19 @@ export async function POST(request: Request) {
           },
         },
         { status: 500 },
+      );
+    }
+
+    if (error instanceof UsageServiceError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: error.code,
+            message: error.message,
+          },
+        },
+        { status: error.status },
       );
     }
 

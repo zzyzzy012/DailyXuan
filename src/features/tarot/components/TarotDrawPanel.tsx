@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Textarea } from "@/components/ui/textarea";
+import { UsageLimitNotice } from "@/features/usage/components/UsageLimitNotice";
+import type {
+  AiReadingUsageSummary,
+  UsageRecordsApiResponse,
+} from "@/features/usage/types/usage";
 import { tarotDrawRequestSchema } from "../schemas/tarotSchema";
 import type {
   TarotDrawResult as TarotDrawResultType,
@@ -73,11 +78,35 @@ export function TarotDrawPanel() {
   const [drawResult, setDrawResult] = useState<TarotDrawResultType | null>(null);
   const [readingResult, setReadingResult] = useState<TarotReadingResultType | null>(null);
   const [displayedLines, setDisplayedLines] = useState<string[]>([]);
+  const [usageSummary, setUsageSummary] = useState<AiReadingUsageSummary | null>(null);
+
+  const sharedReadingUsage = usageSummary?.sharedReading ?? null;
 
   const canCreateReading = useMemo(
-    () => Boolean(drawResult) && !isDrawing && !isReading,
-    [drawResult, isDrawing, isReading],
+    () =>
+      Boolean(drawResult) &&
+      !isDrawing &&
+      !isReading &&
+      Boolean(sharedReadingUsage?.isAvailable),
+    [drawResult, isDrawing, isReading, sharedReadingUsage?.isAvailable],
   );
+
+  async function refreshUsageSummary() {
+    const response = await fetch("/api/usage-records");
+    const result = (await response.json()) as UsageRecordsApiResponse;
+
+    if (result.success) {
+      setUsageSummary(result.data);
+    }
+  }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void refreshUsageSummary();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, []);
 
   async function handleDraw(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -131,6 +160,11 @@ export function TarotDrawPanel() {
       return;
     }
 
+    if (!sharedReadingUsage?.isAvailable) {
+      setErrorMessage(sharedReadingUsage?.message ?? "AI 解读次数暂不可用");
+      return;
+    }
+
     setIsReading(true);
     setErrorMessage(null);
     setReadingResult(null);
@@ -155,6 +189,7 @@ export function TarotDrawPanel() {
       }
 
       setReadingResult(result.data);
+      await refreshUsageSummary();
     } catch {
       setErrorMessage("解读生成失败，请稍后再试");
     } finally {
@@ -216,6 +251,7 @@ export function TarotDrawPanel() {
           >
             {isReading ? "解读生成中..." : "生成解读"}
           </Button>
+          <UsageLimitNotice bucket={sharedReadingUsage} />
         </CardContent>
       </Card>
 
