@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { UsageLimitNotice } from "@/features/usage/components/UsageLimitNotice";
+import type {
+  AiReadingUsageSummary,
+  UsageRecordsApiResponse,
+} from "@/features/usage/types/usage";
 
 import {
   BAZI_BIRTH_TIME_PERIOD_OPTIONS,
@@ -61,11 +66,31 @@ export function BaziReadingForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isReading, setIsReading] = useState(false);
   const [readingResult, setReadingResult] = useState<BaziReadingResultType | null>(null);
+  const [usageSummary, setUsageSummary] = useState<AiReadingUsageSummary | null>(null);
+
+  const sharedReadingUsage = usageSummary?.sharedReading ?? null;
 
   const birthCityOptions = useMemo(
     () => getBaziCityOptionsByProvince(birthProvince),
     [birthProvince],
   );
+
+  async function refreshUsageSummary() {
+    const response = await fetch("/api/usage-records");
+    const result = (await response.json()) as UsageRecordsApiResponse;
+
+    if (result.success) {
+      setUsageSummary(result.data);
+    }
+  }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void refreshUsageSummary();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, []);
 
   function handleBirthProvinceChange(value: string) {
     const cityOptions = getBaziCityOptionsByProvince(value);
@@ -110,6 +135,11 @@ export function BaziReadingForm() {
       return;
     }
 
+    if (!sharedReadingUsage?.isAvailable) {
+      setErrorMessage(sharedReadingUsage?.message ?? "AI 解读次数暂不可用");
+      return;
+    }
+
     setIsReading(true);
     setErrorMessage(null);
     setReadingResult(null);
@@ -131,6 +161,7 @@ export function BaziReadingForm() {
       }
 
       setReadingResult(result.data);
+      await refreshUsageSummary();
     } catch {
       setErrorMessage("八字简批生成失败，请稍后再试");
     } finally {
@@ -327,10 +358,15 @@ export function BaziReadingForm() {
               <p className="text-sm text-destructive">{errorMessage}</p>
             ) : null}
 
-            <Button type="submit" className="w-full" disabled={isReading}>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isReading || !sharedReadingUsage?.isAvailable}
+            >
               <Sparkles className="h-4 w-4" aria-hidden="true" />
               {isReading ? "简批生成中..." : "生成八字简批"}
             </Button>
+            <UsageLimitNotice bucket={sharedReadingUsage} />
           </form>
         </CardContent>
       </Card>

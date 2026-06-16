@@ -19,7 +19,7 @@ export function FreeUsagePanel() {
             每日体验规则
           </h2>
           <p className="max-w-3xl text-sm leading-6 text-muted-foreground">
-            今日灵签可免费抽取；梦境解析、塔罗占卜与八字简批共享每日免费解读额度。免费额度用完后，可通过后续会员或次数包继续生成解读。
+            登录后可每日免费体验 2 次 AI 解读：今日灵签解读独立 1 次，梦境解析、塔罗占卜和八字简批共享 1 次。抽签本身可先体验，生成 AI 解读会消耗对应次数。
           </p>
         </div>
 

@@ -62,17 +62,17 @@ export const FEATURE_ENTRIES = [
 export const USAGE_RULES = [
   {
     title: "今日灵签",
-    description: "每日可免费抽取今日灵签，适合用作当天的轻量提醒。",
+    description: "今日灵签可先免费抽取；如需 AI 解读，普通用户有每日 1 次独立免费机会。",
     icon: CalendarHeart,
   },
   {
-    title: "其他解读",
-    description: "梦境解析、塔罗占卜、八字简批共享每日 1 次免费解读额度。",
+    title: "梦境/塔罗/八字",
+    description: "梦境解析、塔罗占卜、八字简批每日共享 1 次免费 AI 解读机会。",
     icon: Coins,
   },
   {
-    title: "会员/次数",
-    description: "免费额度用完后，可通过后续会员或次数包继续生成解读。",
+    title: "会员次数",
+    description: "免费机会用完后，可开通会员或补充次数继续生成 AI 解读。",
     icon: CreditCard,
   },
 ] as const;

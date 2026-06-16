@@ -62,7 +62,7 @@ export function MembershipStatusCard({ profile }: MembershipStatusCardProps) {
                 <div className="mt-5 space-y-1">
                   <p className="text-2xl font-semibold">{config.priceLabel}</p>
                   <p className="text-sm text-muted-foreground">
-                    每日 {config.dailyCredits} 次体验
+                    {config.quotaLabel}
                   </p>
                 </div>
               </div>

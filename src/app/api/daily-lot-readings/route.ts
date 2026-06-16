@@ -6,12 +6,19 @@ import {
   createDailyLotReading,
   DailyLotReadingServiceError,
 } from "@/features/daily-lot/services/dailyLotReadingService";
+import {
+  UsageServiceError,
+  withAiReadingUsage,
+} from "@/features/usage/services/usageService";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const values = dailyLotReadingRequestSchema.parse(body);
-    const reading = await createDailyLotReading(values);
+    const reading = await withAiReadingUsage({
+      featureType: "daily-lot",
+      action: () => createDailyLotReading(values),
+    });
 
     return NextResponse.json({
       success: true,
@@ -41,6 +48,19 @@ export async function POST(request: Request) {
           },
         },
         { status: 500 },
+      );
+    }
+
+    if (error instanceof UsageServiceError) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: {
+            code: error.code,
+            message: error.message,
+          },
+        },
+        { status: error.status },
       );
     }
 

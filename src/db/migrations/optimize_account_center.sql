@@ -5,9 +5,17 @@ add column if not exists email_rebind_requested_at timestamptz;
 alter table public.profiles
 drop constraint if exists profiles_membership_level_check;
 
+update public.profiles
+set membership_level = case membership_level
+  when 'daily_5' then 'basic'
+  when 'daily_15' then 'plus'
+  else membership_level
+end
+where membership_level in ('daily_5', 'daily_15');
+
 alter table public.profiles
 add constraint profiles_membership_level_check
-check (membership_level in ('free', 'daily_5', 'daily_15'));
+check (membership_level in ('free', 'basic', 'plus'));
 
 create or replace function public.update_own_profile_settings(input_nickname text)
 returns void

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { CalendarDays, Sparkles } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -13,6 +13,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { UsageLimitNotice } from "@/features/usage/components/UsageLimitNotice";
+import type {
+  AiReadingUsageSummary,
+  UsageRecordsApiResponse,
+} from "@/features/usage/types/usage";
 import { cn } from "@/lib/utils";
 
 import { DAILY_LOT_FOCUS_OPTIONS } from "../constants";
@@ -60,11 +65,31 @@ export function DailyLotPanel() {
   const [isReading, setIsReading] = useState(false);
   const [drawResult, setDrawResult] = useState<DailyLotDrawResultType | null>(null);
   const [readingResult, setReadingResult] = useState<DailyLotReadingResultType | null>(null);
+  const [usageSummary, setUsageSummary] = useState<AiReadingUsageSummary | null>(null);
+
+  const dailyLotUsage = usageSummary?.dailyLot ?? null;
 
   const canCreateReading = useMemo(
-    () => Boolean(drawResult) && !isDrawing && !isReading,
-    [drawResult, isDrawing, isReading],
+    () => Boolean(drawResult) && !isDrawing && !isReading && Boolean(dailyLotUsage?.isAvailable),
+    [dailyLotUsage?.isAvailable, drawResult, isDrawing, isReading],
   );
+
+  async function refreshUsageSummary() {
+    const response = await fetch("/api/usage-records");
+    const result = (await response.json()) as UsageRecordsApiResponse;
+
+    if (result.success) {
+      setUsageSummary(result.data);
+    }
+  }
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => {
+      void refreshUsageSummary();
+    }, 0);
+
+    return () => window.clearTimeout(timer);
+  }, []);
 
   async function handleDraw(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -114,6 +139,11 @@ export function DailyLotPanel() {
       return;
     }
 
+    if (!dailyLotUsage?.isAvailable) {
+      setErrorMessage(dailyLotUsage?.message ?? "AI 解读次数暂不可用");
+      return;
+    }
+
     setIsReading(true);
     setErrorMessage(null);
     setReadingResult(null);
@@ -141,6 +171,7 @@ export function DailyLotPanel() {
       }
 
       setReadingResult(result.data);
+      await refreshUsageSummary();
     } catch {
       setErrorMessage("解签生成失败，请稍后再试");
     } finally {
@@ -226,6 +257,7 @@ export function DailyLotPanel() {
           >
             {isReading ? "解签生成中..." : "生成解签"}
           </Button>
+          <UsageLimitNotice bucket={dailyLotUsage} />
         </>
       ) : null}
 
