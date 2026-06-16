@@ -1,0 +1,121 @@
+export const BAZI_NICKNAME_MIN_LENGTH = 1;
+export const BAZI_NICKNAME_MAX_LENGTH = 16;
+export const BAZI_CITY_MIN_LENGTH = 2;
+export const BAZI_CITY_MAX_LENGTH = 20;
+export const BAZI_BIRTH_PLACE_DETAIL_MAX_LENGTH = 40;
+export const BAZI_CURRENT_SITUATION_MAX_LENGTH = 160;
+
+export const BAZI_GENDER_OPTIONS = ["女性", "男性", "不便透露"] as const;
+
+export const BAZI_BIRTH_TIME_STATUS_OPTIONS = [
+  {
+    value: "exact",
+    label: "知道具体时间",
+    description: "可填写小时和分钟，报告会按信息完整版本生成。",
+  },
+  {
+    value: "period",
+    label: "只知道大概时段",
+    description: "选择一个两小时左右的出生时段，报告会按时段简批。",
+  },
+  {
+    value: "unknown",
+    label: "不知道出生时间",
+    description: "生成三柱简批，并提示缺少时柱的限制。",
+  },
+] as const;
+
+export const BAZI_BIRTH_TIME_PERIOD_OPTIONS = [
+  "子时 23:00-00:59",
+  "丑时 01:00-02:59",
+  "寅时 03:00-04:59",
+  "卯时 05:00-06:59",
+  "辰时 07:00-08:59",
+  "巳时 09:00-10:59",
+  "午时 11:00-12:59",
+  "未时 13:00-14:59",
+  "申时 15:00-16:59",
+  "酉时 17:00-18:59",
+  "戌时 19:00-20:59",
+  "亥时 21:00-22:59",
+] as const;
+
+export const BAZI_FOCUS_AREA_OPTIONS = [
+  "综合",
+  "感情",
+  "事业",
+  "学习",
+  "财富",
+  "人际",
+  "情绪",
+  "自我成长",
+] as const;
+
+export const MAINLAND_CHINA_CITY_OPTIONS = [
+  { value: "北京市-北京市", label: "北京市 - 北京市" },
+  { value: "天津市-天津市", label: "天津市 - 天津市" },
+  { value: "上海市-上海市", label: "上海市 - 上海市" },
+  { value: "重庆市-重庆市", label: "重庆市 - 重庆市" },
+  { value: "河北省-石家庄市", label: "河北省 - 石家庄市" },
+  { value: "河北省-唐山市", label: "河北省 - 唐山市" },
+  { value: "河北省-秦皇岛市", label: "河北省 - 秦皇岛市" },
+  { value: "河北省-保定市", label: "河北省 - 保定市" },
+  { value: "河北省-邯郸市", label: "河北省 - 邯郸市" },
+  { value: "山西省-太原市", label: "山西省 - 太原市" },
+  { value: "山西省-大同市", label: "山西省 - 大同市" },
+  { value: "内蒙古自治区-呼和浩特市", label: "内蒙古自治区 - 呼和浩特市" },
+  { value: "内蒙古自治区-包头市", label: "内蒙古自治区 - 包头市" },
+  { value: "辽宁省-沈阳市", label: "辽宁省 - 沈阳市" },
+  { value: "辽宁省-大连市", label: "辽宁省 - 大连市" },
+  { value: "吉林省-长春市", label: "吉林省 - 长春市" },
+  { value: "吉林省-吉林市", label: "吉林省 - 吉林市" },
+  { value: "黑龙江省-哈尔滨市", label: "黑龙江省 - 哈尔滨市" },
+  { value: "黑龙江省-齐齐哈尔市", label: "黑龙江省 - 齐齐哈尔市" },
+  { value: "江苏省-南京市", label: "江苏省 - 南京市" },
+  { value: "江苏省-苏州市", label: "江苏省 - 苏州市" },
+  { value: "江苏省-无锡市", label: "江苏省 - 无锡市" },
+  { value: "江苏省-常州市", label: "江苏省 - 常州市" },
+  { value: "江苏省-徐州市", label: "江苏省 - 徐州市" },
+  { value: "浙江省-杭州市", label: "浙江省 - 杭州市" },
+  { value: "浙江省-宁波市", label: "浙江省 - 宁波市" },
+  { value: "浙江省-温州市", label: "浙江省 - 温州市" },
+  { value: "浙江省-绍兴市", label: "浙江省 - 绍兴市" },
+  { value: "浙江省-嘉兴市", label: "浙江省 - 嘉兴市" },
+  { value: "浙江省-湖州市", label: "浙江省 - 湖州市" },
+  { value: "浙江省-金华市", label: "浙江省 - 金华市" },
+  { value: "浙江省-台州市", label: "浙江省 - 台州市" },
+  { value: "安徽省-合肥市", label: "安徽省 - 合肥市" },
+  { value: "安徽省-芜湖市", label: "安徽省 - 芜湖市" },
+  { value: "福建省-福州市", label: "福建省 - 福州市" },
+  { value: "福建省-厦门市", label: "福建省 - 厦门市" },
+  { value: "福建省-泉州市", label: "福建省 - 泉州市" },
+  { value: "江西省-南昌市", label: "江西省 - 南昌市" },
+  { value: "江西省-赣州市", label: "江西省 - 赣州市" },
+  { value: "山东省-济南市", label: "山东省 - 济南市" },
+  { value: "山东省-青岛市", label: "山东省 - 青岛市" },
+  { value: "山东省-烟台市", label: "山东省 - 烟台市" },
+  { value: "河南省-郑州市", label: "河南省 - 郑州市" },
+  { value: "河南省-洛阳市", label: "河南省 - 洛阳市" },
+  { value: "湖北省-武汉市", label: "湖北省 - 武汉市" },
+  { value: "湖北省-宜昌市", label: "湖北省 - 宜昌市" },
+  { value: "湖南省-长沙市", label: "湖南省 - 长沙市" },
+  { value: "湖南省-株洲市", label: "湖南省 - 株洲市" },
+  { value: "广东省-广州市", label: "广东省 - 广州市" },
+  { value: "广东省-深圳市", label: "广东省 - 深圳市" },
+  { value: "广东省-佛山市", label: "广东省 - 佛山市" },
+  { value: "广东省-东莞市", label: "广东省 - 东莞市" },
+  { value: "广西壮族自治区-南宁市", label: "广西壮族自治区 - 南宁市" },
+  { value: "广西壮族自治区-桂林市", label: "广西壮族自治区 - 桂林市" },
+  { value: "海南省-海口市", label: "海南省 - 海口市" },
+  { value: "海南省-三亚市", label: "海南省 - 三亚市" },
+  { value: "四川省-成都市", label: "四川省 - 成都市" },
+  { value: "四川省-绵阳市", label: "四川省 - 绵阳市" },
+  { value: "贵州省-贵阳市", label: "贵州省 - 贵阳市" },
+  { value: "云南省-昆明市", label: "云南省 - 昆明市" },
+  { value: "西藏自治区-拉萨市", label: "西藏自治区 - 拉萨市" },
+  { value: "陕西省-西安市", label: "陕西省 - 西安市" },
+  { value: "甘肃省-兰州市", label: "甘肃省 - 兰州市" },
+  { value: "青海省-西宁市", label: "青海省 - 西宁市" },
+  { value: "宁夏回族自治区-银川市", label: "宁夏回族自治区 - 银川市" },
+  { value: "新疆维吾尔自治区-乌鲁木齐市", label: "新疆维吾尔自治区 - 乌鲁木齐市" },
+] as const;
