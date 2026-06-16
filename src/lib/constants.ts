@@ -17,7 +17,7 @@ export const NAV_ITEMS = [
   { label: "今日灵签", href: "/daily-lot" },
   { label: "梦境解析", href: "/dream" },
   { label: "塔罗占卜", href: "/tarot" },
-  { label: "八字简批", href: "#bazi" },
+  { label: "八字简批", href: "/bazi" },
   { label: "历史报告", href: "#history" },
   { label: "会员/次数", href: "#membership" },
 ] as const;
@@ -57,7 +57,7 @@ export const FEATURE_ENTRIES = [
     icon: BookOpenText,
     badge: "娱乐简析",
     cta: "了解简批",
-    href: "#bazi",
+    href: "/bazi",
   },
 ] as const;
 
