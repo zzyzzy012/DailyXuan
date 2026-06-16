@@ -24,8 +24,11 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <Button variant="ghost" size="sm" asChild>
+            <Link href="/login">登录</Link>
+          </Button>
           <Button size="sm" asChild>
-            <Link href="/tarot">开始体验</Link>
+            <Link href="/register">注册</Link>
           </Button>
         </div>
       </div>
