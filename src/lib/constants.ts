@@ -15,7 +15,7 @@ export const SITE_DESCRIPTION =
 
 export const NAV_ITEMS = [
   { label: "今日灵签", href: "/daily-lot" },
-  { label: "梦境解析", href: "#dream" },
+  { label: "梦境解析", href: "/dream" },
   { label: "塔罗占卜", href: "/tarot" },
   { label: "八字简批", href: "#bazi" },
   { label: "历史报告", href: "#history" },
@@ -39,7 +39,7 @@ export const FEATURE_ENTRIES = [
     icon: Moon,
     badge: "共享免费",
     cta: "解析梦境",
-    href: "#dream",
+    href: "/dream",
   },
   {
     id: "tarot",
