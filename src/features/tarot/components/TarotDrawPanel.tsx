@@ -61,7 +61,7 @@ function createDisplayLines(result: TarotDrawResultType): string[] {
     `塔罗 第二张牌｜${secondCard.position.title} - 牌: ${secondCard.card.name}（${orientationText[secondCard.orientation]}）`,
     "正在抽取 第三张牌 ...",
     `塔罗 第三张牌｜${thirdCard.position.title} - 牌: ${thirdCard.card.name}（${orientationText[thirdCard.orientation]}）`,
-    "占卜结束，祝你好运！",
+    "抽牌完成。你可以先观察牌阵，再生成完整解读。",
   ];
 }
 
@@ -201,7 +201,7 @@ export function TarotDrawPanel() {
               </div>
             ) : (
               <p className="text-muted-foreground">
-                输入问题并开始占卜后，这里会像打字流一样展示抽牌过程。
+                输入问题并开始抽牌后，这里会依次展示你的牌阵、牌位与正逆位。完成抽牌后，可继续生成完整解读。
               </p>
             )}
           </div>

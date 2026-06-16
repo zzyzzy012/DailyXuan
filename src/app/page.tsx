@@ -1,6 +1,5 @@
 import { FeatureEntryGrid } from "@/components/home/FeatureEntryGrid";
 import { FreeUsagePanel } from "@/components/home/FreeUsagePanel";
-import { HomeDisclaimer } from "@/components/home/HomeDisclaimer";
 import { HomeHero } from "@/components/home/HomeHero";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
@@ -13,7 +12,6 @@ export default function Home() {
         <HomeHero />
         <FeatureEntryGrid />
         <FreeUsagePanel />
-        <HomeDisclaimer />
       </main>
       <SiteFooter />
     </div>

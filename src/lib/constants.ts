@@ -3,7 +3,6 @@ import {
   CalendarHeart,
   Coins,
   CreditCard,
-  History,
   Moon,
   Sparkles,
 } from "lucide-react";
@@ -11,14 +10,13 @@ import {
 export const SITE_NAME = "DailyXuan";
 
 export const SITE_DESCRIPTION =
-  "轻量级玄学娱乐与自我探索工具，提供今日灵签、梦境解析、塔罗占卜与八字简批。";
+  "汇集灵签、塔罗、解梦与运势解读的日常玄学陪伴工具。";
 
 export const NAV_ITEMS = [
   { label: "今日灵签", href: "/daily-lot" },
   { label: "梦境解析", href: "/dream" },
   { label: "塔罗占卜", href: "/tarot" },
   { label: "八字简批", href: "/bazi" },
-  { label: "历史报告", href: "#history" },
   { label: "会员/次数", href: "#membership" },
 ] as const;
 
@@ -26,36 +24,36 @@ export const FEATURE_ENTRIES = [
   {
     id: "daily-lot",
     title: "今日灵签",
-    description: "输入出生日期并选择今日关注，抽取一支适合日常阅读的轻量灵签。",
+    description: "给今天一句提醒。在忙碌与琐碎之间，为自己保留片刻停顿。一支灵签，一份今日启发。",
     icon: CalendarHeart,
-    badge: "每日免费",
+    badge: "今日启示",
     cta: "抽取灵签",
     href: "/daily-lot",
   },
   {
     id: "dream",
     title: "梦境解析",
-    description: "把梦境内容、醒来感受和近期压力，转成更贴近生活的情绪提示。",
+    description: "听听潜意识的声音。梦境并非预言，而是情绪与记忆的映照。从梦中寻找那些被忽略的线索。",
     icon: Moon,
-    badge: "共享免费",
+    badge: "梦境探索",
     cta: "解析梦境",
     href: "/dream",
   },
   {
     id: "tarot",
     title: "塔罗占卜",
-    description: "围绕一个具体问题抽取 1、3 或 5 张牌，生成牌面解读和行动建议。",
+    description: "换一个角度看问题。围绕此刻最关心的事，获得一次清晰而克制的解读。答案仍在你手中。",
     icon: Sparkles,
-    badge: "优先开发",
+    badge: "问题解读",
     cta: "开始抽牌",
     href: "/tarot",
   },
   {
     id: "bazi",
     title: "八字简批",
-    description: "基于出生年月日时、出生地和性别，提供娱乐向性格与近期提醒。",
+    description: "认识自己，而非定义自己。从出生信息出发，探索性格特质与人生节奏。仅供参考，也值得思考。",
     icon: BookOpenText,
-    badge: "娱乐简析",
+    badge: "自我观察",
     cta: "了解简批",
     href: "/bazi",
   },
@@ -64,25 +62,20 @@ export const FEATURE_ENTRIES = [
 export const USAGE_RULES = [
   {
     title: "今日灵签",
-    description: "抽签本身免费，AI 解签成功后再按后续规则消耗次数。",
+    description: "每日可免费抽取今日灵签，适合用作当天的轻量提醒。",
     icon: CalendarHeart,
   },
   {
     title: "其他解读",
-    description: "梦境解析、塔罗占卜、八字简批共享每日 1 次免费额度。",
+    description: "梦境解析、塔罗占卜、八字简批共享每日 1 次免费解读额度。",
     icon: Coins,
   },
   {
-    title: "历史报告",
-    description: "登录后可保存和复看历史报告，复看不消耗免费或付费次数。",
-    icon: History,
-  },
-  {
     title: "会员/次数",
-    description: "免费额度用完后，可通过会员或次数包继续生成深度解读。",
+    description: "免费额度用完后，可通过后续会员或次数包继续生成解读。",
     icon: CreditCard,
   },
 ] as const;
 
 export const DISCLAIMER_TEXT =
-  "本站内容仅供娱乐与自我探索参考，不构成医疗、法律、投资或重大人生决策建议。";
+  "DailyXuan 的灵签、梦境、塔罗与八字内容仅供娱乐、情绪整理与自我探索参考，不构成医疗、法律、投资或重大人生决策建议；重要事项请结合现实情况独立判断。";
