@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useMemo, useState, type FormEvent } from "react";
 import { LockKeyhole, LogIn, Mail } from "lucide-react";
 
@@ -22,7 +22,6 @@ const defaultValues: LoginFormValues = {
 };
 
 export function LoginForm() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [values, setValues] = useState<LoginFormValues>(defaultValues);
   const [errors, setErrors] = useState<LoginFormErrors>({});
@@ -63,8 +62,7 @@ export function LoginForm() {
         return;
       }
 
-      router.push("/");
-      router.refresh();
+      window.location.assign("/account");
     } finally {
       setIsSubmitting(false);
     }
