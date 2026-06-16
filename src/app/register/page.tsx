@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   description: "使用邮箱和密码创建 DailyXuan 账号。",
 };
 
-export default function RegisterPage() {
+export default async function RegisterPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />

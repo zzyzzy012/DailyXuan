@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "使用邮箱和密码登录 DailyXuan。",
 };
 
-export default function LoginPage() {
+export default async function LoginPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <SiteHeader />
