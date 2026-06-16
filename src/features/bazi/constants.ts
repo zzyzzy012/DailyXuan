@@ -1,7 +1,12 @@
+import { provinceAndCityData } from "element-china-area-data";
+import type { DataItem } from "element-china-area-data";
+
 export const BAZI_NICKNAME_MIN_LENGTH = 1;
 export const BAZI_NICKNAME_MAX_LENGTH = 16;
 export const BAZI_CITY_MIN_LENGTH = 2;
 export const BAZI_CITY_MAX_LENGTH = 20;
+export const BAZI_LOCATION_CODE_MIN_LENGTH = 2;
+export const BAZI_LOCATION_CODE_MAX_LENGTH = 12;
 export const BAZI_BIRTH_PLACE_DETAIL_MAX_LENGTH = 40;
 export const BAZI_CURRENT_SITUATION_MAX_LENGTH = 160;
 
@@ -51,71 +56,49 @@ export const BAZI_FOCUS_AREA_OPTIONS = [
   "自我成长",
 ] as const;
 
-export const MAINLAND_CHINA_CITY_OPTIONS = [
-  { value: "北京市-北京市", label: "北京市 - 北京市" },
-  { value: "天津市-天津市", label: "天津市 - 天津市" },
-  { value: "上海市-上海市", label: "上海市 - 上海市" },
-  { value: "重庆市-重庆市", label: "重庆市 - 重庆市" },
-  { value: "河北省-石家庄市", label: "河北省 - 石家庄市" },
-  { value: "河北省-唐山市", label: "河北省 - 唐山市" },
-  { value: "河北省-秦皇岛市", label: "河北省 - 秦皇岛市" },
-  { value: "河北省-保定市", label: "河北省 - 保定市" },
-  { value: "河北省-邯郸市", label: "河北省 - 邯郸市" },
-  { value: "山西省-太原市", label: "山西省 - 太原市" },
-  { value: "山西省-大同市", label: "山西省 - 大同市" },
-  { value: "内蒙古自治区-呼和浩特市", label: "内蒙古自治区 - 呼和浩特市" },
-  { value: "内蒙古自治区-包头市", label: "内蒙古自治区 - 包头市" },
-  { value: "辽宁省-沈阳市", label: "辽宁省 - 沈阳市" },
-  { value: "辽宁省-大连市", label: "辽宁省 - 大连市" },
-  { value: "吉林省-长春市", label: "吉林省 - 长春市" },
-  { value: "吉林省-吉林市", label: "吉林省 - 吉林市" },
-  { value: "黑龙江省-哈尔滨市", label: "黑龙江省 - 哈尔滨市" },
-  { value: "黑龙江省-齐齐哈尔市", label: "黑龙江省 - 齐齐哈尔市" },
-  { value: "江苏省-南京市", label: "江苏省 - 南京市" },
-  { value: "江苏省-苏州市", label: "江苏省 - 苏州市" },
-  { value: "江苏省-无锡市", label: "江苏省 - 无锡市" },
-  { value: "江苏省-常州市", label: "江苏省 - 常州市" },
-  { value: "江苏省-徐州市", label: "江苏省 - 徐州市" },
-  { value: "浙江省-杭州市", label: "浙江省 - 杭州市" },
-  { value: "浙江省-宁波市", label: "浙江省 - 宁波市" },
-  { value: "浙江省-温州市", label: "浙江省 - 温州市" },
-  { value: "浙江省-绍兴市", label: "浙江省 - 绍兴市" },
-  { value: "浙江省-嘉兴市", label: "浙江省 - 嘉兴市" },
-  { value: "浙江省-湖州市", label: "浙江省 - 湖州市" },
-  { value: "浙江省-金华市", label: "浙江省 - 金华市" },
-  { value: "浙江省-台州市", label: "浙江省 - 台州市" },
-  { value: "安徽省-合肥市", label: "安徽省 - 合肥市" },
-  { value: "安徽省-芜湖市", label: "安徽省 - 芜湖市" },
-  { value: "福建省-福州市", label: "福建省 - 福州市" },
-  { value: "福建省-厦门市", label: "福建省 - 厦门市" },
-  { value: "福建省-泉州市", label: "福建省 - 泉州市" },
-  { value: "江西省-南昌市", label: "江西省 - 南昌市" },
-  { value: "江西省-赣州市", label: "江西省 - 赣州市" },
-  { value: "山东省-济南市", label: "山东省 - 济南市" },
-  { value: "山东省-青岛市", label: "山东省 - 青岛市" },
-  { value: "山东省-烟台市", label: "山东省 - 烟台市" },
-  { value: "河南省-郑州市", label: "河南省 - 郑州市" },
-  { value: "河南省-洛阳市", label: "河南省 - 洛阳市" },
-  { value: "湖北省-武汉市", label: "湖北省 - 武汉市" },
-  { value: "湖北省-宜昌市", label: "湖北省 - 宜昌市" },
-  { value: "湖南省-长沙市", label: "湖南省 - 长沙市" },
-  { value: "湖南省-株洲市", label: "湖南省 - 株洲市" },
-  { value: "广东省-广州市", label: "广东省 - 广州市" },
-  { value: "广东省-深圳市", label: "广东省 - 深圳市" },
-  { value: "广东省-佛山市", label: "广东省 - 佛山市" },
-  { value: "广东省-东莞市", label: "广东省 - 东莞市" },
-  { value: "广西壮族自治区-南宁市", label: "广西壮族自治区 - 南宁市" },
-  { value: "广西壮族自治区-桂林市", label: "广西壮族自治区 - 桂林市" },
-  { value: "海南省-海口市", label: "海南省 - 海口市" },
-  { value: "海南省-三亚市", label: "海南省 - 三亚市" },
-  { value: "四川省-成都市", label: "四川省 - 成都市" },
-  { value: "四川省-绵阳市", label: "四川省 - 绵阳市" },
-  { value: "贵州省-贵阳市", label: "贵州省 - 贵阳市" },
-  { value: "云南省-昆明市", label: "云南省 - 昆明市" },
-  { value: "西藏自治区-拉萨市", label: "西藏自治区 - 拉萨市" },
-  { value: "陕西省-西安市", label: "陕西省 - 西安市" },
-  { value: "甘肃省-兰州市", label: "甘肃省 - 兰州市" },
-  { value: "青海省-西宁市", label: "青海省 - 西宁市" },
-  { value: "宁夏回族自治区-银川市", label: "宁夏回族自治区 - 银川市" },
-  { value: "新疆维吾尔自治区-乌鲁木齐市", label: "新疆维吾尔自治区 - 乌鲁木齐市" },
-] as const;
+export type BaziAreaOption = {
+  value: string;
+  label: string;
+  code: string;
+};
+
+function toAreaOption(item: DataItem): BaziAreaOption {
+  return {
+    value: item.label,
+    label: item.label,
+    code: item.value,
+  };
+}
+
+export const BAZI_PROVINCE_OPTIONS = provinceAndCityData
+  .filter((province) => province.children && province.children.length > 0)
+  .map(toAreaOption);
+
+export const DEFAULT_BAZI_BIRTH_PROVINCE = "浙江省";
+export const DEFAULT_BAZI_BIRTH_CITY = "杭州市";
+
+export function getBaziCityOptionsByProvince(provinceName: string): BaziAreaOption[] {
+  const province = provinceAndCityData.find((item) => item.label === provinceName);
+
+  return province?.children?.map(toAreaOption) ?? [];
+}
+
+export function getBaziCityOption(
+  provinceName: string,
+  cityName: string,
+): BaziAreaOption | undefined {
+  return getBaziCityOptionsByProvince(provinceName).find((city) => city.value === cityName);
+}
+
+export function isValidBaziBirthLocation(values: {
+  birthProvince: string;
+  birthCity: string;
+  birthLocationCode: string;
+}): boolean {
+  const city = getBaziCityOption(values.birthProvince, values.birthCity);
+
+  return Boolean(city && city.code === values.birthLocationCode);
+}
+
+export const DEFAULT_BAZI_BIRTH_LOCATION_CODE =
+  getBaziCityOption(DEFAULT_BAZI_BIRTH_PROVINCE, DEFAULT_BAZI_BIRTH_CITY)?.code ?? "";

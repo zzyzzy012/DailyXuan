@@ -4,12 +4,16 @@ import {
   BAZI_BIRTH_PLACE_DETAIL_MAX_LENGTH,
   BAZI_BIRTH_TIME_PERIOD_OPTIONS,
   BAZI_BIRTH_TIME_STATUS_OPTIONS,
+  BAZI_CITY_MAX_LENGTH,
+  BAZI_CITY_MIN_LENGTH,
   BAZI_CURRENT_SITUATION_MAX_LENGTH,
   BAZI_FOCUS_AREA_OPTIONS,
   BAZI_GENDER_OPTIONS,
+  BAZI_LOCATION_CODE_MAX_LENGTH,
+  BAZI_LOCATION_CODE_MIN_LENGTH,
   BAZI_NICKNAME_MAX_LENGTH,
   BAZI_NICKNAME_MIN_LENGTH,
-  MAINLAND_CHINA_CITY_OPTIONS,
+  isValidBaziBirthLocation,
 } from "../constants";
 
 const birthTimeStatusValues = BAZI_BIRTH_TIME_STATUS_OPTIONS.map((option) => option.value) as [
@@ -73,10 +77,21 @@ export const baziReadingRequestSchema = z
     birthTimeStatus: z.enum(birthTimeStatusValues),
     birthTime: z.string().trim().refine(isValidBirthTime, "请选择有效的出生时间").optional(),
     birthTimePeriod: z.enum(BAZI_BIRTH_TIME_PERIOD_OPTIONS).optional(),
-    birthCity: z.enum(MAINLAND_CHINA_CITY_OPTIONS.map((option) => option.value) as [
-      (typeof MAINLAND_CHINA_CITY_OPTIONS)[number]["value"],
-      ...(typeof MAINLAND_CHINA_CITY_OPTIONS)[number]["value"][],
-    ]),
+    birthProvince: z
+      .string()
+      .trim()
+      .min(BAZI_CITY_MIN_LENGTH, "请选择出生省份")
+      .max(BAZI_CITY_MAX_LENGTH, `出生省份不能超过 ${BAZI_CITY_MAX_LENGTH} 个字`),
+    birthCity: z
+      .string()
+      .trim()
+      .min(BAZI_CITY_MIN_LENGTH, "请选择出生城市")
+      .max(BAZI_CITY_MAX_LENGTH, `出生城市不能超过 ${BAZI_CITY_MAX_LENGTH} 个字`),
+    birthLocationCode: z
+      .string()
+      .trim()
+      .min(BAZI_LOCATION_CODE_MIN_LENGTH, "请选择有效的出生城市")
+      .max(BAZI_LOCATION_CODE_MAX_LENGTH, "出生城市编码格式异常"),
     birthPlaceDetail: z
       .string()
       .trim()
@@ -103,6 +118,14 @@ export const baziReadingRequestSchema = z
         code: "custom",
         path: ["birthTimePeriod"],
         message: "只知道大概时段时，请选择出生时段",
+      });
+    }
+
+    if (!isValidBaziBirthLocation(values)) {
+      context.addIssue({
+        code: "custom",
+        path: ["birthCity"],
+        message: "请选择有效的出生省市",
       });
     }
   });

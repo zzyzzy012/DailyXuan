@@ -63,7 +63,7 @@ export function createBaziReadingPrompt(values: BaziReadingRequest): string {
     `- 性别：${values.gender}`,
     `- 公历出生日期：${values.birthDate}`,
     `- 出生时间状态：${getTimeCompletenessText(values)}`,
-    `- 出生城市：中国大陆，${values.birthCity}`,
+    `- 出生地：中国大陆，${values.birthProvince}，${values.birthCity}（地区编码：${values.birthLocationCode}）`,
     `- 具体出生地：${values.birthPlaceDetail || "用户未填写，不能自行推断。"}`,
     `- 当前关注方向：${values.focusArea}`,
     `- 当前状态补充：${currentSituation}`,

@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useMemo, useState } from "react";
 import { Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -26,7 +26,11 @@ import {
   BAZI_BIRTH_TIME_STATUS_OPTIONS,
   BAZI_FOCUS_AREA_OPTIONS,
   BAZI_GENDER_OPTIONS,
-  MAINLAND_CHINA_CITY_OPTIONS,
+  BAZI_PROVINCE_OPTIONS,
+  DEFAULT_BAZI_BIRTH_CITY,
+  DEFAULT_BAZI_BIRTH_LOCATION_CODE,
+  DEFAULT_BAZI_BIRTH_PROVINCE,
+  getBaziCityOptionsByProvince,
 } from "../constants";
 import {
   baziReadingRequestSchema,
@@ -45,14 +49,43 @@ export function BaziReadingForm() {
   const [birthTime, setBirthTime] = useState("");
   const [birthTimePeriod, setBirthTimePeriod] =
     useState<NonNullable<BaziReadingRequest["birthTimePeriod"]>>("辰时 07:00-08:59");
+  const [birthProvince, setBirthProvince] =
+    useState<BaziReadingRequest["birthProvince"]>(DEFAULT_BAZI_BIRTH_PROVINCE);
   const [birthCity, setBirthCity] =
-    useState<BaziReadingRequest["birthCity"]>("浙江省-杭州市");
+    useState<BaziReadingRequest["birthCity"]>(DEFAULT_BAZI_BIRTH_CITY);
+  const [birthLocationCode, setBirthLocationCode] =
+    useState<BaziReadingRequest["birthLocationCode"]>(DEFAULT_BAZI_BIRTH_LOCATION_CODE);
   const [birthPlaceDetail, setBirthPlaceDetail] = useState("");
   const [focusArea, setFocusArea] = useState<BaziReadingRequest["focusArea"]>("综合");
   const [currentSituation, setCurrentSituation] = useState("");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isReading, setIsReading] = useState(false);
   const [readingResult, setReadingResult] = useState<BaziReadingResultType | null>(null);
+
+  const birthCityOptions = useMemo(
+    () => getBaziCityOptionsByProvince(birthProvince),
+    [birthProvince],
+  );
+
+  function handleBirthProvinceChange(value: string) {
+    const cityOptions = getBaziCityOptionsByProvince(value);
+    const firstCity = cityOptions[0];
+
+    setBirthProvince(value as BaziReadingRequest["birthProvince"]);
+    setBirthCity((firstCity?.value ?? "") as BaziReadingRequest["birthCity"]);
+    setBirthLocationCode((firstCity?.code ?? "") as BaziReadingRequest["birthLocationCode"]);
+  }
+
+  function handleBirthCityChange(value: string) {
+    const city = birthCityOptions.find((option) => option.code === value);
+
+    if (!city) {
+      return;
+    }
+
+    setBirthCity(city.value as BaziReadingRequest["birthCity"]);
+    setBirthLocationCode(city.code as BaziReadingRequest["birthLocationCode"]);
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -64,7 +97,9 @@ export function BaziReadingForm() {
       birthTimeStatus,
       birthTime: birthTimeStatus === "exact" ? birthTime : undefined,
       birthTimePeriod: birthTimeStatus === "period" ? birthTimePeriod : undefined,
+      birthProvince,
       birthCity,
+      birthLocationCode,
       birthPlaceDetail: birthPlaceDetail || undefined,
       focusArea,
       currentSituation: currentSituation || undefined,
@@ -216,21 +251,33 @@ export function BaziReadingForm() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label>出生城市</Label>
-                <Select
-                  value={birthCity}
-                  onValueChange={(value) => setBirthCity(value as BaziReadingRequest["birthCity"])}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="选择出生城市" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {MAINLAND_CHINA_CITY_OPTIONS.map((option) => (
-                      <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <Select value={birthProvince} onValueChange={handleBirthProvinceChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="选择省份">{birthProvince}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {BAZI_PROVINCE_OPTIONS.map((option) => (
+                        <SelectItem key={option.code} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <Select value={birthLocationCode} onValueChange={handleBirthCityChange}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="选择城市">{birthCity}</SelectValue>
+                    </SelectTrigger>
+                    <SelectContent>
+                      {birthCityOptions.map((option) => (
+                        <SelectItem key={option.code} value={option.code}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
               <div className="space-y-2">
