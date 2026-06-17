@@ -3,12 +3,14 @@ import { BadgeCheck, Mail, ShieldCheck, Sparkles, Ticket } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { MEMBERSHIP_LEVEL_CONFIG } from "@/features/account/constants";
+import type { AiReadingUsageSummary } from "@/features/usage/types/usage";
 
 import type { AccountProfile, AccountUser } from "../types/account";
 
 type AccountOverviewCardProps = {
   user: AccountUser;
   profile: AccountProfile;
+  usageSummary: AiReadingUsageSummary;
 };
 
 function formatDateTime(value: string | null): string {
@@ -27,7 +29,24 @@ function getMembershipLabel(level: string): string {
   return MEMBERSHIP_LEVEL_CONFIG[level as keyof typeof MEMBERSHIP_LEVEL_CONFIG]?.label ?? level;
 }
 
-export function AccountOverviewCard({ user, profile }: AccountOverviewCardProps) {
+function getRemainingUsageText(
+  profile: AccountProfile,
+  usageSummary: AiReadingUsageSummary,
+): string {
+  if (usageSummary.membershipLevel === "basic" || usageSummary.membershipLevel === "plus") {
+    return `${profile.remainingCredits} 次`;
+  }
+
+  return `今日剩余 ${
+    usageSummary.dailyLot.remaining + usageSummary.sharedReading.remaining
+  }/2 次`;
+}
+
+export function AccountOverviewCard({
+  user,
+  profile,
+  usageSummary,
+}: AccountOverviewCardProps) {
   const items = [
     {
       icon: Mail,
@@ -48,7 +67,7 @@ export function AccountOverviewCard({ user, profile }: AccountOverviewCardProps)
     {
       icon: Ticket,
       label: "剩余次数",
-      value: `${profile.remainingCredits} 次`,
+      value: getRemainingUsageText(profile, usageSummary),
     },
     {
       icon: ShieldCheck,

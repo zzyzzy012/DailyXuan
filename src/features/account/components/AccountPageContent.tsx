@@ -4,13 +4,19 @@ import { MembershipStatusCard } from "./MembershipStatusCard";
 import { ProfileSettingsForm } from "./ProfileSettingsForm";
 import { SecuritySettingsCard } from "./SecuritySettingsCard";
 import type { AccountProfile, AccountUser } from "../types/account";
+import type { AiReadingUsageSummary } from "@/features/usage/types/usage";
 
 type AccountPageContentProps = {
   user: AccountUser;
   profile: AccountProfile;
+  usageSummary: AiReadingUsageSummary;
 };
 
-export function AccountPageContent({ user, profile }: AccountPageContentProps) {
+export function AccountPageContent({
+  user,
+  profile,
+  usageSummary,
+}: AccountPageContentProps) {
   return (
     <main className="flex-1 bg-muted/30">
       <section className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-10 sm:px-6 lg:px-8">
@@ -24,8 +30,19 @@ export function AccountPageContent({ user, profile }: AccountPageContentProps) {
 
         <AccountShell
           sections={{
-            overview: <AccountOverviewCard user={user} profile={profile} />,
-            membership: <MembershipStatusCard profile={profile} />,
+            overview: (
+              <AccountOverviewCard
+                user={user}
+                profile={profile}
+                usageSummary={usageSummary}
+              />
+            ),
+            membership: (
+              <MembershipStatusCard
+                profile={profile}
+                usageSummary={usageSummary}
+              />
+            ),
             profile: <ProfileSettingsForm profile={profile} />,
             security: <SecuritySettingsCard profile={profile} />,
           }}

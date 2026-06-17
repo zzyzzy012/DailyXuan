@@ -137,7 +137,11 @@ begin
     from public.usage_records
     where user_id = current_user_id
       and quota_bucket = target_quota_bucket
-      and status = 'completed';
+      and usage_date = current_usage_date
+      and (
+        status = 'completed'
+        or (status = 'pending' and expires_at > now())
+      );
 
     if used_count >= 1 then
       return jsonb_build_object(

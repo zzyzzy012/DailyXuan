@@ -4,6 +4,7 @@ import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { AccountPageContent } from "@/features/account/components/AccountPageContent";
 import type { AccountProfile, AccountUser } from "@/features/account/types/account";
+import { getAiReadingUsageSummary } from "@/features/usage/services/usageService";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 type ProfileRow = {
@@ -102,11 +103,16 @@ export default async function AccountPage() {
     emailRebindRequestedAt: null,
     createdAt: user.created_at,
   };
+  const usageSummary = await getAiReadingUsageSummary();
 
   return (
     <>
       <SiteHeader />
-      <AccountPageContent user={accountUser} profile={accountProfile} />
+      <AccountPageContent
+        user={accountUser}
+        profile={accountProfile}
+        usageSummary={usageSummary}
+      />
       <SiteFooter />
     </>
   );

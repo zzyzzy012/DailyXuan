@@ -10,7 +10,7 @@ export type AccountSection = "overview" | "membership" | "profile" | "security";
 
 export const PROFILE_UPDATE_INTERVAL_DAYS = 7;
 export const EMAIL_REBIND_INTERVAL_DAYS = 15;
-export const MEMBERSHIP_CONTACT_EMAIL = "zz@163.com";
+export const MEMBERSHIP_CONTACT_EMAIL = "DailyXuan@zanaya.cc";
 
 export const ACCOUNT_SECTION_OPTIONS = [
   {

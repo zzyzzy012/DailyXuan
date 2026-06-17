@@ -131,7 +131,22 @@ function createBalanceBucketSummary(
     isAvailable: remaining > 0,
     message:
       remaining > 0 ? `AI 解读剩余 ${remaining} 次` : BALANCE_LIMIT_MESSAGE,
-  };
+    };
+}
+
+function getCurrentAiUsageDate(): string {
+  const parts = new Intl.DateTimeFormat("en", {
+    timeZone: "Asia/Shanghai",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).formatToParts(new Date());
+
+  const year = parts.find((part) => part.type === "year")?.value;
+  const month = parts.find((part) => part.type === "month")?.value;
+  const day = parts.find((part) => part.type === "day")?.value;
+
+  return `${year}-${month}-${day}`;
 }
 
 function parseUsageRpcResult(value: unknown): UsageRpcResult {
@@ -210,6 +225,7 @@ export async function getAiReadingUsageSummary(): Promise<AiReadingUsageSummary>
     .returns<UsageRecordSource[]>();
 
   const records = usageRecords ?? [];
+  const currentUsageDate = getCurrentAiUsageDate();
 
   if (membershipLevel === "basic" || membershipLevel === "plus") {
     const activePendingCount = records.filter(
@@ -234,10 +250,18 @@ export async function getAiReadingUsageSummary(): Promise<AiReadingUsageSummary>
   }
 
   const dailyLotUsed = records.filter(
-    (record) => record.quota_bucket === "daily-lot" && record.status === "completed",
+    (record) =>
+      record.quota_bucket === "daily-lot" &&
+      record.usage_date === currentUsageDate &&
+      (record.status === "completed" ||
+        (record.status === "pending" && record.expires_at > nowIso)),
   ).length;
   const sharedReadingUsed = records.filter(
-    (record) => record.quota_bucket === "shared-reading" && record.status === "completed",
+    (record) =>
+      record.quota_bucket === "shared-reading" &&
+      record.usage_date === currentUsageDate &&
+      (record.status === "completed" ||
+        (record.status === "pending" && record.expires_at > nowIso)),
   ).length;
 
   return {

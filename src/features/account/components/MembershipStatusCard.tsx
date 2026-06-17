@@ -5,11 +5,13 @@ import {
   MEMBERSHIP_CONTACT_EMAIL,
   MEMBERSHIP_LEVEL_CONFIG,
 } from "@/features/account/constants";
+import type { AiReadingUsageSummary } from "@/features/usage/types/usage";
 
 import type { AccountProfile } from "../types/account";
 
 type MembershipStatusCardProps = {
   profile: AccountProfile;
+  usageSummary: AiReadingUsageSummary;
 };
 
 function formatDateTime(value: string | null): string {
@@ -24,7 +26,23 @@ function formatDateTime(value: string | null): string {
   }).format(new Date(value));
 }
 
-export function MembershipStatusCard({ profile }: MembershipStatusCardProps) {
+function getRemainingUsageText(
+  profile: AccountProfile,
+  usageSummary: AiReadingUsageSummary,
+): string {
+  if (usageSummary.membershipLevel === "basic" || usageSummary.membershipLevel === "plus") {
+    return `${profile.remainingCredits} 次`;
+  }
+
+  return `今日剩余 ${
+    usageSummary.dailyLot.remaining + usageSummary.sharedReading.remaining
+  }/2 次`;
+}
+
+export function MembershipStatusCard({
+  profile,
+  usageSummary,
+}: MembershipStatusCardProps) {
   const activeLevel =
     MEMBERSHIP_LEVEL_CONFIG[profile.membershipLevel as keyof typeof MEMBERSHIP_LEVEL_CONFIG] ??
     MEMBERSHIP_LEVEL_CONFIG.free;
@@ -79,7 +97,9 @@ export function MembershipStatusCard({ profile }: MembershipStatusCardProps) {
           <div className="rounded-xl border bg-background p-5">
             <Ticket className="mb-3 h-4 w-4 text-muted-foreground" aria-hidden="true" />
             <p className="text-xs uppercase tracking-[0.14em] text-muted-foreground">剩余次数</p>
-            <p className="mt-2 text-lg font-medium">{profile.remainingCredits} 次</p>
+            <p className="mt-2 text-lg font-medium">
+              {getRemainingUsageText(profile, usageSummary)}
+            </p>
           </div>
           <div className="rounded-xl border bg-background p-5">
             <CalendarClock className="mb-3 h-4 w-4 text-muted-foreground" aria-hidden="true" />
