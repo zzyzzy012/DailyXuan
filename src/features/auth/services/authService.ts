@@ -9,6 +9,16 @@ import type {
   RegisterFormValues,
 } from "@/features/auth/types/auth";
 
+function getEmailRedirectTo(): string {
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+
+  if (siteUrl) {
+    return new URL("/auth/callback", siteUrl).toString();
+  }
+
+  return new URL("/auth/callback", window.location.origin).toString();
+}
+
 function getAuthErrorMessage(error: AuthError): string {
   if (error.message.includes("Invalid login credentials")) {
     return "邮箱或密码不正确，请检查后重试";
@@ -45,7 +55,7 @@ export async function signUpWithEmail(
     return supabase;
   }
 
-  const emailRedirectTo = `${window.location.origin}/auth/callback`;
+  const emailRedirectTo = getEmailRedirectTo();
 
   const { error } = await supabase.auth.signUp({
     email: values.email,
